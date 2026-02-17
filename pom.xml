@@ -70,29 +70,6 @@
             <id>github</id>
             <url>scm:git:https://github.com/eclipse-ee4j/orb-gmbal.git</url>
         </site>
-        <!-- TODO: Can be removed after it would be removed from parent too -->
-        <snapshotRepository>
-            <id>ossrh</id>
-            <name>Disabled Sonatype Nexus</name>
-            <url>http://localhost</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <name>Disabled Sonatype Nexus</name>
-            <url>http://localhost</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </distributionManagement>
 
     <mailingLists>
@@ -224,31 +201,9 @@
                     <version>3.9.0</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.7.0</version>
-                    <configuration>
-                        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>injected-nexus-deploy</id>
-                            <phase>none</phase>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>org.sonatype.central</groupId>
                     <artifactId>central-publishing-maven-plugin</artifactId>
                     <version>0.10.0</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <autoPublish>${release.autopublish}</autoPublish>
-                        <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots</centralSnapshotsUrl>
-                        <deploymentName>Eclipse GMBAL ${project.version}</deploymentName>
-                        <publishingServerId>central</publishingServerId>
-                        <waitUntil>${release.waitUntil}</waitUntil>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
@@ -401,6 +356,26 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>oss-release</id>
+            <build>
+                <plugins>
+                    <!-- We have to override settings from parent -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <autoPublish>${release.autopublish}</autoPublish>
+                            <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots</centralSnapshotsUrl>
+                            <deploymentName>Eclipse GMBAL ${project.version}</deploymentName>
+                            <publishingServerId>central</publishingServerId>
+                            <waitUntil>${release.waitUntil}</waitUntil>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
