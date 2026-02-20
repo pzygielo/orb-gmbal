@@ -364,6 +364,14 @@
             <id>oss-release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
+                        <configuration>
+                            <!-- Without this it doesn't generate cyclonedx files at all. -->
+                            <skipNotDeployed>false</skipNotDeployed>
+                        </configuration>
+                    </plugin>
                     <!-- We have to override settings from parent -->
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
